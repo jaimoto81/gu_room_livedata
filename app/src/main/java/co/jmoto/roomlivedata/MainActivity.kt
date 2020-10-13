@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import co.jmoto.roomlivedata.database.AppDatabase
 import co.jmoto.roomlivedata.database.dao.EstudianteDao
@@ -26,9 +27,12 @@ class MainActivity : AppCompatActivity() {
         val btnCargar = findViewById<Button>(R.id.btnGuardar)
         txtDatos = findViewById<TextView>(R.id.txtDatos)
         btnCargar.setOnClickListener{
-            agregarTexto(estudianteViewModel.listEstudiantes())
+            estudianteViewModel?.insert(Estudiante("Federico","Camacho","",20,false))
+            estudianteViewModel?.insert(Estudiante("Alejandro","Ramirez","Name",22,true))
         }
 
+        //OBSERVER -
+        estudianteViewModel.estudiantes.observe(this, Observer { lstEstudiantes -> agregarTexto(lstEstudiantes)  })
 
     }
 
