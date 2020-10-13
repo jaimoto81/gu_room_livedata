@@ -21,4 +21,8 @@ interface EstudianteDao{
     //consulta SQL
     @Query("DELETE FROM ESTUDIANTE")
     fun deleteAll()
+
+    //consulta SQL
+    @Query("SELECT * FROM ESTUDIANTE")
+    fun getEstudiantes() : List<Estudiante>
 }
