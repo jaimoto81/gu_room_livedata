@@ -5,42 +5,39 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import co.jmoto.roomlivedata.database.AppDatabase
 import co.jmoto.roomlivedata.database.dao.EstudianteDao
 import co.jmoto.roomlivedata.database.model.Estudiante
+import co.jmoto.roomlivedata.ui.EstudianteViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    var baseDatos : AppDatabase ?= null
-    var estudianteDao : EstudianteDao ?= null
     lateinit var txtDatos : TextView
+    lateinit var estudianteViewModel: EstudianteViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        baseDatos = AppDatabase.getAppDatabase(this)
-        estudianteDao = baseDatos?.estudianteDao()
+        //Inicializar el ViewModel
+        estudianteViewModel = ViewModelProvider(this).get(EstudianteViewModel::class.java)
 
         val btnCargar = findViewById<Button>(R.id.btnGuardar)
         txtDatos = findViewById<TextView>(R.id.txtDatos)
-
-
         btnCargar.setOnClickListener{
-            estudianteDao?.deleteAll()
-            estudianteDao?.insert(Estudiante(1L,"Jaime Albeiro","Flautero","Valencia",20,false))
-           // estudianteDao?.insert(Estudiante(2L,"Alicia","Vanegas","Castro",22,true))
-
-            val estudiantes = estudianteDao?.getEstudiantes()
-
-            if(estudiantes != null)
-                for(estudiante in estudiantes)
-                    agregarTexto(estudiante.nombres + " " + estudiante.primerApellido )
+            agregarTexto(estudianteViewModel.listEstudiantes())
         }
+
+
     }
 
-    fun agregarTexto(texto: String){
+    fun agregarTexto(estudiantes: List<Estudiante>?){
+        var texto = StringBuffer()
+        for(estudiante in estudiantes!!){
+            texto.append(estudiante.nombres + " " + estudiante.primerApellido)
+            texto.append("\n")
+        }
         txtDatos.text = texto
     }
 }

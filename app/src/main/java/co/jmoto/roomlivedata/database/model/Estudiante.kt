@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey
 //Crea la entidad (tabla) en SQLite
 @Entity
 data class Estudiante(
-    @PrimaryKey
-    var id: Long = 0L,
     var nombres: String,
     @ColumnInfo(name = "primer_apellido")
     var primerApellido: String,
@@ -17,4 +15,7 @@ data class Estudiante(
     var asistencia: Int,
     @ColumnInfo(name = "premio")
     var ganadoPremio: Boolean
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0L
+}
