@@ -11,9 +11,21 @@ import co.jmoto.roomlivedata.database.model.Estudiante
 abstract class AppDatabase : RoomDatabase() {
     abstract fun estudianteDao(): EstudianteDao
 
-    fun getAppDataBase(context: Context): AppDatabase? {
-        return Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "myDB")
-            .build()
+    companion object {
+        var INSTANCE: AppDatabase? = null
+
+        fun getAppDataBase(context: Context): AppDatabase? {
+            if (INSTANCE == null){
+                synchronized(AppDatabase::class){
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "myDB").allowMainThreadQueries().build()
+                }
+            }
+            return INSTANCE
+        }
+
+        fun destroyDataBase(){
+            INSTANCE = null
+        }
     }
 
 }
