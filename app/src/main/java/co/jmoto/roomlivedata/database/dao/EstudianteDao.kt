@@ -1,5 +1,6 @@
 package co.jmoto.roomlivedata.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -23,5 +24,6 @@ interface EstudianteDao{
     fun deleteAll()
 
     @Query("SELECT * FROM ESTUDIANTE")
-    fun getEstudiantes(): List<Estudiante>
+    fun getEstudiantes(): LiveData<List<Estudiante>>
+
 }
